@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install openai
+    
+    - name: Validate skill structure
+      run: |
+        # Check required files exist
+        test -f SKILL.md || (echo "SKILL.md not found" && exit 1)
+        test -f scripts/search.py || (echo "scripts/search.py not found" && exit 1)
+        echo "✓ Skill structure valid"
+    
+    - name: Check Python syntax
+      run: |
+        python -m py_compile scripts/search.py
+        echo "✓ Python syntax valid"
+    
+    - name: Test import
+      run: |
+        python -c "import sys; sys.path.insert(0, 'scripts'); from search import search, get_api_key; print('✓ Import successful')"
