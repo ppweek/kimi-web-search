@@ -120,7 +120,7 @@ kimi-web-search/
 
 ```bash
 # 克隆仓库
-git clone https://github.com/yourusername/kimi-web-search.git
+git clone https://github.com/ppweek/kimi-web-search.git
 cd kimi-web-search
 
 # 设置环境变量
